@@ -1,0 +1,3 @@
+{
+    "terminal.integrated.shellArgs.linux" : ["/K", "C:\\<path-to-conda-installation>\\Scripts\\activate.bat C:\\<path-to-conda-installation>"]
+}
