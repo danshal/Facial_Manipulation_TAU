@@ -59,8 +59,7 @@ class Trainer:
                                       shuffle=True)
         print_every = int(len(train_dataloader) / 10)
 
-        for batch_idx, (inputs, targets) in enumerate(train_dataloader):
-            """INSERT YOUR CODE HERE."""
+        for batch_idx, (inputs, targets) in enumerate(train_dataloader):            
             #Move inputs and targets to GPU if available
             inputs = inputs.to(device)
             targets = targets.to(device)
@@ -78,8 +77,12 @@ class Trainer:
             with torch.no_grad():
                 nof_samples = len(inputs) * (batch_idx + 1)
                 total_loss += loss
-                avg_loss = total_loss / nof_samples
+                avg_loss = total_loss / (batch_idx + 1)
+                print(outputs)
+                print(f'max is: {outputs.argmax(1)}')
+                print(f'targets are: {targets}')
                 correct_labeled_samples += (outputs.argmax(1) == targets).type(torch.float).sum().item()
+                print(correct_labeled_samples)
                 accuracy = (correct_labeled_samples/ nof_samples) * 100
             #print once in a while to see progress...
             if batch_idx % print_every == 0 or \
@@ -87,7 +90,7 @@ class Trainer:
                 print(f'Epoch [{self.epoch:03d}] | Loss: {avg_loss:.3f} | '
                       f'Acc: {accuracy:.2f}[%] '
                       f'({correct_labeled_samples}/{nof_samples})')
-
+                
         return avg_loss, accuracy
 
     def evaluate_model_on_dataloader(
