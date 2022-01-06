@@ -1,7 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
@@ -9,7 +6,7 @@
             "type": "python",
             "request": "launch",
             "program": "${file}",
-            "args":["-d", "fakes_dataset", "-m", "SimpleNet", "--lr", "0.001", "-b", "32", "-e", "1", "-o", "Adam"],
+            "args":["-m", "SimpleNet", "-cpp", "checkpoints/fakes_dataset_SimpleNet_Adam.pt", "-d", "fakes_dataset"],
             "console": "internalConsole"
         }
     ]

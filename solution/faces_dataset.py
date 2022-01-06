@@ -30,11 +30,11 @@ class FacesDataset(Dataset):
         self.root_path = root_path
         self.real_image_names = os.listdir(os.path.join(self.root_path, 'real'))        
         self.fake_image_names = os.listdir(os.path.join(self.root_path, 'fake'))
-        self.real_image_size = len(self.real_image_names)
-        self.fake_image_size = len(self.fake_image_names)
+        self._real_image_size = len(self.real_image_names)
+        self._fake_image_size = len(self.fake_image_names)
         self._images = self.fake_image_names + self.real_image_names               
-        self._dataset = list(zip(self._images, [FAKE_LABEL] * self.fake_image_size + [REAL_LABEL] * self.real_image_size))        
-        self.dataset_len = len(self._dataset)                          
+        self._dataset = list(zip(self._images, [FAKE_LABEL] * self._fake_image_size + [REAL_LABEL] * self._real_image_size))
+        self._dataset_len = len(self._dataset)                        
         self.transform = transform
 
     def __getitem__(self, index) -> tuple[torch.Tensor, int]:
@@ -47,10 +47,10 @@ class FacesDataset(Dataset):
             img_path = os.path.join(self.root_path, REAL_DIRECTORY, img_name)        
         with Image.open(img_path) as im:
                 if self.transform:
-                    sample = self.transform(im)        
+                    sample = self.transform(im)
         return (sample, img_label)
                      
 
     def __len__(self):
         """Return the number of images in the dataset."""        
-        return self.dataset_len        
+        return self._dataset_len        

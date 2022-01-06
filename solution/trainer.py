@@ -80,7 +80,7 @@ class Trainer:
                 total_loss += loss
                 avg_loss = (total_loss.item() / (batch_idx + 1))
                 correct_labeled_samples += (outputs.argmax(1) == targets).type(torch.float).sum().item()                
-                accuracy = ((correct_labeled_samples/ nof_samples) * 100)
+                accuracy = ((correct_labeled_samples / nof_samples) * 100)
             #print once in a while to see progress...
             if batch_idx % print_every == 0 or \
                     batch_idx == len(train_dataloader) - 1:                

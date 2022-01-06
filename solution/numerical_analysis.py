@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from sklearn import metrics
 from torch.utils.data import DataLoader
 
-from common import FIGURES_DIR
+from common import CHECKPOINT_DIR, FIGURES_DIR
 from utils import load_dataset, load_model
 
 
@@ -57,8 +57,21 @@ def get_soft_scores_and_true_labels(dataset, model):
         inference result on the images in the dataset (data in index = 1).
         gt_labels: an iterable holding the samples' ground truth labels.
     """
-    """INSERT YOUR CODE HERE, overrun return."""
-    return torch.rand(100, ), torch.rand(100, ), torch.randint(0, 2, (100, ))
+    with torch.no_grad():             
+        my_batch_size = 32
+        dataloader = DataLoader(dataset, batch_size=my_batch_size, shuffle=False)
+        all_first_soft_scores = torch.empty(0)
+        all_second_soft_scores = torch.empty_like(all_first_soft_scores)
+        gt_labels = torch.empty_like(all_first_soft_scores)  #grount truth
+        #loop over the dataset
+        for _, (inputs, targets) in enumerate(dataloader):
+            inputs = inputs.to(device)
+            targets = targets.to(device)
+            #Compute soft scores from model for both labels and appending in to their lists
+            all_first_soft_scores = torch.cat((model(inputs)[:, 0], all_first_soft_scores))
+            all_second_soft_scores = torch.cat((model(inputs)[:, 1], all_second_soft_scores))
+            gt_labels = torch.cat((targets, gt_labels))
+    return all_first_soft_scores, all_second_soft_scores, gt_labels
 
 
 def plot_roc_curve(roc_curve_figure,
